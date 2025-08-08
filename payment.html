@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | NEXORA-TECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="courses.html" class="logo"><i class="fas fa-infinity"></i> NEXORA-TECH</a>
+                <ul class="nav-links auth-links">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="container">
+            <h2 class="section-title neon-text" style="margin-bottom: 1.5rem;">Purchase Access Code</h2>
+            
+            <div style="background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+                <h3 style="color: #4facfe; margin-bottom: 1rem;" id="payment-course-name">Course Name</h3>
+                <div class="price-tag" style="margin: 1.5rem auto; max-width: 300px;">
+                    <span class="usd-price" id="course-price-usd">$0 USD</span>
+                    <span class="naira-price" id="course-price-naira">≈ ₦0 Naira</span>
+                </div>
+            </div>
+            
+            <h3 class="section-title neon-text" style="font-size: 1.8rem; margin: 2rem 0 1.5rem;">Select Payment Method</h3>
+            
+            <div class="payment-options">
+                <div class="payment-card">
+                    <i class="fas fa-dollar-sign usd-icon"></i>
+                    <h3 style="color: #4facfe;">USD Payment</h3>
+                    <p style="color: #c0c0ff; margin-bottom: 1.5rem;">Pay with USD via WhatsApp</p>
+                    <button id="pay-usd" class="btn btn-primary">Pay with USD</button>
+                </div>
+                
+                <div class="payment-card">
+                    <i class="fas fa-naira-sign naira-icon"></i>
+                    <h3 style="color: #00d2d3;">Naira Payment</h3>
+                    <p style="color: #c0c0ff; margin-bottom: 1.5rem;">Pay with Naira via WhatsApp</p>
+                    <button id="pay-naira" class="btn btn-primary">Pay with Naira</button>
+                </div>
+                
+                <div class="payment-card">
+                    <i class="fab fa-bitcoin crypto-icon"></i>
+                    <h3 style="color: #f2a900;">Cryptocurrency</h3>
+                    <p style="color: #c0c0ff; margin-bottom: 1.5rem;">Pay with Bitcoin or other cryptocurrencies</p>
+                    <button id="pay-crypto" class="btn btn-primary">Pay with Crypto</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px;">
+                <h3 style="color: #4facfe; margin-bottom: 1rem;">Important Notes</h3>
+                <ul style="color: #c0c0ff; padding-left: 1.5rem;">
+                    <li style="margin-bottom: 0.5rem;">After payment, you will receive an access code via WhatsApp</li>
+                    <li style="margin-bottom: 0.5rem;">The access code is valid for one course and one user only</li>
+                    <li style="margin-bottom: 0.5rem;">Contact us on WhatsApp for any payment issues</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>2025 NEXORA-TECH | all rights reserved</p>
+        </div>
+    </footer>
+    
+    <script src="js/script.js"></script>
+    <script>
+        // Set course name and prices from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const course = localStorage.getItem('selectedCourse');
+            document.getElementById('payment-course-name').textContent = course;
+            
+            // Set prices based on course
+            let usdPrice = 0;
+            let nairaPrice = 0;
+            
+            if (course === 'YouTube Automation') {
+                usdPrice = 20;
+                nairaPrice = 29000;
+            } else if (course === 'Digital Marketing') {
+                usdPrice = 12;
+                nairaPrice = 17400;
+            }
+            
+            document.getElementById('course-price-usd').textContent = `$${usdPrice} USD`;
+            document.getElementById('course-price-naira').textContent = `≈ ₦${nairaPrice.toLocaleString()} Naira`;
+        });
+    </script>
+</body>
+</html>

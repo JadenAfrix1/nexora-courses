@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Code | NEXORA-TECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="courses.html" class="logo"><i class="fas fa-infinity"></i> NEXORA-TECH</a>
+                <ul class="nav-links auth-links">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="container">
+            <div class="access-code-container">
+                <h2 class="section-title neon-text" style="margin-bottom: 1.5rem;">Enter Access Code</h2>
+                
+                <div style="background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+                    <h3 style="color: #4facfe; margin-bottom: 1rem;" id="course-name">Course Name</h3>
+                    <p style="color: #c0c0ff; margin-bottom: 1.5rem;">
+                        Please enter the 8-character access code to unlock this course. If you don't have an access code, you can purchase one below.
+                    </p>
+                    
+                    <div class="access-code-input">
+                        <input type="text" class="form-control code-input" maxlength="1" pattern="[A-Za-z0-9]">
+                        <input type="text" class="form-control code-input" maxlength="1" pattern="[A-Za-z0-9]">
+                        <input type="text" class="form-control code-input" maxlength="1" pattern="[A-Za-z0-9]">
+                        <input type="text" class="form-control code-input" maxlength="1" pattern="[A-Za-z0-9]">
+                        <input type="text" class="form-control code-input" maxlength="1" pattern="[A-Za-z0-9]">
+                        <input type="text" class="form-control code-input" maxlength="1" pattern="[A-Za-z0-9]">
+                        <input type="text" class="form-control code-input" maxlength="1" pattern="[A-Za-z0-9]">
+                        <input type="text" class="form-control code-input" maxlength="1" pattern="[A-Za-z0-9]">
+                    </div>
+                    
+                    <button id="verify-code-btn" class="btn btn-primary pulse" style="width: auto; margin: 0 auto; display: block;">
+                        Verify Code
+                    </button>
+                </div>
+                
+                <div style="text-align: center;">
+                    <p style="color: #c0c0ff; margin-bottom: 1rem;">Don't have an access code? Purchase one now:</p>
+                    <a href="payment.html" class="btn btn-outline">Purchase Access Code</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>2025 NEXORA-TECH | all rights reserved</p>
+        </div>
+    </footer>
+    
+    <script src="js/script.js"></script>
+    <script>
+        // Set course name from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const course = localStorage.getItem('selectedCourse');
+            document.getElementById('course-name').textContent = course;
+        });
+    </script>
+</body>
+</html>

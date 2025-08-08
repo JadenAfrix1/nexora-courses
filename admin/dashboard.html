@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | NEXORA-TECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="../../courses.html" class="logo"><i class="fas fa-infinity"></i> NEXORA-TECH</a>
+                <ul class="nav-links auth-links">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="container">
+            <div class="admin-dashboard">
+                <div class="sidebar">
+                    <ul>
+                        <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="manage-codes.html"><i class="fas fa-key"></i> Manage Codes</a></li>
+                        <li><a href="manage-admins.html"><i class="fas fa-users-cog"></i> Manage Admins</a></li>
+                    </ul>
+                </div>
+                
+                <div class="main-content">
+                    <div class="admin-header">
+                        <h2 class="neon-text" style="font-size: 1.8rem;">Admin Dashboard</h2>
+                    </div>
+                    
+                    <div class="dashboard-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div style="background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2.5rem; color: #4facfe; margin-bottom: 0.5rem;" id="total-users">0</div>
+                            <div style="color: #c0c0ff;">Total Users</div>
+                        </div>
+                        
+                        <div style="background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2.5rem; color: #00d2d3; margin-bottom: 0.5rem;" id="total-codes">0</div>
+                            <div style="color: #c0c0ff;">Total Codes</div>
+                        </div>
+                        
+                        <div style="background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2.5rem; color: #f2a900; margin-bottom: 0.5rem;" id="used-codes">0</div>
+                            <div style="color: #c0c0ff;">Used Codes</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="color: #4facfe; margin-bottom: 1rem;">Recent Activity</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Activity</th>
+                                    <th>User</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>10:24 AM</td>
+                                    <td>Generated access code</td>
+                                    <td>Admin</td>
+                                </tr>
+                                <tr>
+                                    <td>9:45 AM</td>
+                                    <td>User registered</td>
+                                    <td>john@example.com</td>
+                                </tr>
+                                <tr>
+                                    <td>8:30 AM</td>
+                                    <td>Access code used</td>
+                                    <td>jane@example.com</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>2025 NEXORA-TECH | all rights reserved</p>
+        </div>
+    </footer>
+    
+    <script src="../../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Access Codes | NEXORA-TECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="../../courses.html" class="logo"><i class="fas fa-infinity"></i> NEXORA-TECH</a>
+                <ul class="nav-links auth-links">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="container">
+            <div class="admin-dashboard">
+                <div class="sidebar">
+                    <ul>
+                        <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="manage-codes.html" class="active"><i class="fas fa-key"></i> Manage Codes</a></li>
+                        <li><a href="manage-admins.html"><i class="fas fa-users-cog"></i> Manage Admins</a></li>
+                    </ul>
+                </div>
+                
+                <div class="main-content">
+                    <div class="admin-header">
+                        <h2 class="neon-text" style="font-size: 1.8rem;">Manage Access Codes</h2>
+                        <button id="generate-code-btn" class="btn btn-primary">Generate Code</button>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="course-select" style="display: block; margin-bottom: 0.5rem; color: #c0c0ff;">Select Course</label>
+                        <select id="course-select" class="form-control" style="width: 300px;">
+                            <option value="">-- Select Course --</option>
+                            <option value="YouTube Automation">YouTube Automation</option>
+                            <option value="Digital Marketing">Digital Marketing</option>
+                        </select>
+                    </div>
+                    
+                    <div style="background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="color: #4facfe; margin-bottom: 1rem;">Access Codes</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Course</th>
+                                    <th>User</th>
+                                    <th>Status</th>
+                                    <th>Date Created</th>
+                                </tr>
+                            </thead>
+                            <tbody id="codes-table">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>2025 NEXORA-TECH | all rights reserved</p>
+        </div>
+    </footer>
+    
+    <script src="../../js/script.js"></script>
+</body>
+</html>
