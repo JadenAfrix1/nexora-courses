@@ -1,41 +1,64 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all functionality
+    initAuth();
+    initForms();
+    initPayment();
+    initAccessCode();
+    initAdmin();
+    initCourseBadges();
+    initResponsive();
+    
+    // Check for notifications in URL
+    checkUrlNotifications();
+});
+
+// ======================
+// AUTHENTICATION SYSTEM
+// ======================
+function initAuth() {
     // Check authentication status on protected pages
     checkAuth();
     
-    // Initialize form handlers
-    initForms();
-    
-    // Initialize payment handlers
-    initPayment();
-    
-    // Initialize admin features
-    initAdmin();
-    
-    // Initialize access code functionality
-    initAccessCode();
-    
-    // Initialize course functionality
-    initCourses();
-});
+    // Handle logout
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    }
+}
 
-// Authentication functions
 function checkAuth() {
-    const protectedPages = ['courses.html', 'youtube-automation.html', 'digital-marketing.html', 
-                          'data-science.html', 'access-code.html', 'payment.html', 
-                          'admin/dashboard.html', 'admin/manage-codes.html', 'admin/manage-admins.html'];
+    const protectedPages = [
+        'courses.html', 
+        'youtube-automation.html', 
+        'digital-marketing.html',
+        'data-science.html',
+        'access-code.html',
+        'payment.html',
+        'admin/dashboard.html',
+        'admin/manage-codes.html',
+        'admin/manage-admins.html'
+    ];
     
     const currentPage = window.location.pathname.split('/').pop();
     
     if (protectedPages.includes(currentPage)) {
-        const user = localStorage.getItem('currentUser');
+        const user = getCurrentUser();
         if (!user) {
             // Redirect to login if not authenticated
             window.location.href = 'login.html';
         } else {
             // Update UI for authenticated user
-            updateAuthUI(JSON.parse(user));
+            updateAuthUI(user);
         }
     }
+}
+
+function getCurrentUser() {
+    const userStr = localStorage.getItem('currentUser');
+    return userStr ? JSON.parse(userStr) : null;
 }
 
 function updateAuthUI(user) {
@@ -60,13 +83,24 @@ function updateAuthUI(user) {
     }
 }
 
+function logout() {
+    localStorage.removeItem('currentUser');
+    showNotification('success', 'Logged out successfully');
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 1000);
+}
+
+// ======================
+// FORM HANDLING
+// ======================
 function initForms() {
     // Login form
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             
             loginUser(email, password);
@@ -78,13 +112,18 @@ function initForms() {
     if (signupForm) {
         signupForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
             
             if (password !== confirmPassword) {
-                alert('Passwords do not match!');
+                showNotification('error', 'Passwords do not match!');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showNotification('error', 'Password must be at least 6 characters long');
                 return;
             }
             
@@ -95,36 +134,74 @@ function initForms() {
 
 function loginUser(email, password) {
     // Check if user exists
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.email === email && u.password === password);
+    const users = getUsers();
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
     
     if (user) {
+        // Store current user
         localStorage.setItem('currentUser', JSON.stringify(user));
-        window.location.href = 'courses.html';
+        showNotification('success', 'Login successful!');
+        
+        // Redirect based on user type
+        setTimeout(() => {
+            if (user.isAdmin) {
+                window.location.href = 'admin/dashboard.html';
+            } else {
+                window.location.href = 'courses.html';
+            }
+        }, 1000);
     } else {
         // Check if it's the main admin
-        if (email === 'tawandamahachi07@gmail.com' && password === 'mahachi2007') {
+        if (email.toLowerCase() === 'tawandamahachi07@gmail.com' && password === 'mahachi2007') {
             const adminUser = {
                 id: 'admin',
                 name: 'Main Admin',
                 email: 'tawandamahachi07@gmail.com',
                 isAdmin: true,
-                courses: []
+                isSuperAdmin: true,
+                courses: [],
+                createdAt: new Date().toISOString()
             };
             
             localStorage.setItem('currentUser', JSON.stringify(adminUser));
-            window.location.href = 'admin/dashboard.html';
+            // Ensure admin exists in users list
+            let users = getUsers();
+            if (!users.some(u => u.email === adminUser.email)) {
+                users.push(adminUser);
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            showNotification('success', 'Admin login successful!');
+            setTimeout(() => {
+                window.location.href = 'admin/dashboard.html';
+            }, 1000);
         } else {
-            alert('Invalid email or password!');
+            showNotification('error', 'Invalid email or password!');
         }
     }
 }
 
 function signupUser(name, email, password) {
+    // Validate inputs
+    if (!name || name.length < 2) {
+        showNotification('error', 'Name must be at least 2 characters long');
+        return;
+    }
+    
+    if (!validateEmail(email)) {
+        showNotification('error', 'Please enter a valid email address');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showNotification('error', 'Password must be at least 6 characters long');
+        return;
+    }
+    
     // Check if user already exists
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    if (users.some(u => u.email === email)) {
-        alert('Email already registered!');
+    const users = getUsers();
+    if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        showNotification('error', 'Email already registered!');
         return;
     }
     
@@ -135,7 +212,8 @@ function signupUser(name, email, password) {
         email,
         password,
         isAdmin: false,
-        courses: []
+        courses: [],
+        createdAt: new Date().toISOString()
     };
     
     users.push(newUser);
@@ -143,15 +221,21 @@ function signupUser(name, email, password) {
     
     // Log in the new user
     localStorage.setItem('currentUser', JSON.stringify(newUser));
-    window.location.href = 'courses.html';
+    showNotification('success', 'Account created successfully!');
+    
+    setTimeout(() => {
+        window.location.href = 'courses.html';
+    }, 1000);
 }
 
-function logout() {
-    localStorage.removeItem('currentUser');
-    window.location.href = 'index.html';
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
 }
 
-// Payment functions
+// ======================
+// PAYMENT SYSTEM
+// ======================
 function initPayment() {
     // WhatsApp payment buttons
     const usdBtn = document.getElementById('pay-usd');
@@ -186,7 +270,116 @@ function initPayment() {
     }
 }
 
-// Admin functions
+// ======================
+// ACCESS CODE SYSTEM
+// ======================
+function initAccessCode() {
+    // Initialize access code input fields
+    const codeInputs = document.querySelectorAll('.code-input');
+    if (codeInputs.length > 0) {
+        codeInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                if (this.value && index < codeInputs.length - 1) {
+                    codeInputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !this.value && index > 0) {
+                    codeInputs[index - 1].focus();
+                }
+            });
+        });
+        
+        // Verify code button
+        const verifyCodeBtn = document.getElementById('verify-code-btn');
+        if (verifyCodeBtn) {
+            verifyCodeBtn.addEventListener('click', verifyAccessCode);
+        }
+    }
+    
+    // Copy code functionality
+    const copyIcons = document.querySelectorAll('.copy-icon');
+    copyIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            const code = this.closest('.code-cell').querySelector('span').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                showNotification('success', 'Access code copied to clipboard!');
+                
+                // Visual feedback
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showNotification('error', 'Failed to copy code');
+            });
+        });
+    });
+}
+
+function verifyAccessCode() {
+    const codeInputs = document.querySelectorAll('.code-input');
+    const code = Array.from(codeInputs).map(input => input.value).join('').toUpperCase();
+    const course = localStorage.getItem('selectedCourse');
+    
+    if (code.length !== 8) {
+        showNotification('error', 'Please enter a valid 8-character access code!');
+        return;
+    }
+    
+    const codes = getAccessCodes();
+    const codeObj = codes.find(c => c.code === code && c.course === course);
+    
+    if (!codeObj) {
+        showNotification('error', 'Invalid access code for this course!');
+        return;
+    }
+    
+    if (codeObj.status === 'used') {
+        showNotification('error', 'This access code has already been used!');
+        return;
+    }
+    
+    // Update code status
+    const user = getCurrentUser();
+    const updatedCodes = codes.map(c => 
+        c.code === code ? {...c, status: 'used', userEmail: user.email, usedAt: new Date().toISOString()} : c
+    );
+    localStorage.setItem('accessCodes', JSON.stringify(updatedCodes));
+    
+    // Add course to user
+    user.courses = user.courses || [];
+    if (!user.courses.includes(course)) {
+        user.courses.push(course);
+        const users = getUsers();
+        const userIndex = users.findIndex(u => u.id === user.id);
+        if (userIndex !== -1) {
+            users[userIndex] = user;
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+        localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+    
+    showNotification('success', 'Access code verified! Redirecting to course...');
+    
+    // Redirect to course
+    setTimeout(() => {
+        if (course === 'YouTube Automation') {
+            window.location.href = 'youtube-automation.html';
+        } else if (course === 'Digital Marketing') {
+            window.location.href = 'digital-marketing.html';
+        } else if (course === 'Data Science Fundamentals') {
+            window.location.href = 'data-science.html';
+        }
+    }, 1500);
+}
+
+// ======================
+// ADMIN SYSTEM
+// ======================
 function initAdmin() {
     // Admin dashboard
     if (window.location.pathname.includes('admin/dashboard.html')) {
@@ -217,17 +410,16 @@ function initAdmin() {
 }
 
 function loadAdminDashboard() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const user = getCurrentUser();
     if (!user || !user.isAdmin) {
         window.location.href = 'courses.html';
         return;
     }
     
     // Update dashboard with stats
-    const totalUsers = JSON.parse(localStorage.getItem('users') || '[]').length;
-    const totalCodes = JSON.parse(localStorage.getItem('accessCodes') || '[]').length;
-    const usedCodes = JSON.parse(localStorage.getItem('accessCodes') || '[]')
-        .filter(code => code.status === 'used').length;
+    const totalUsers = getUsers().length;
+    const totalCodes = getAccessCodes().length;
+    const usedCodes = getAccessCodes().filter(code => code.status === 'used').length;
     
     document.getElementById('total-users').textContent = totalUsers;
     document.getElementById('total-codes').textContent = totalCodes;
@@ -235,7 +427,7 @@ function loadAdminDashboard() {
 }
 
 function loadManageCodes() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const user = getCurrentUser();
     if (!user || !user.isAdmin) {
         window.location.href = 'courses.html';
         return;
@@ -245,7 +437,7 @@ function loadManageCodes() {
 }
 
 function renderAccessCodes() {
-    const codes = JSON.parse(localStorage.getItem('accessCodes') || '[]');
+    const codes = getAccessCodes();
     const tableBody = document.querySelector('#codes-table tbody');
     
     if (!tableBody) return;
@@ -255,7 +447,7 @@ function renderAccessCodes() {
     if (codes.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="5" style="text-align: center; padding: 2rem;">No access codes generated yet</td>
+                <td colspan="6" style="text-align: center; padding: 2.5rem; color: #a0a0c0;">No access codes generated yet</td>
             </tr>
         `;
         return;
@@ -264,18 +456,43 @@ function renderAccessCodes() {
     codes.forEach(code => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${code.code}</td>
+            <td class="code-cell">
+                <span>${code.code}</span>
+                <i class="fas fa-copy copy-icon"></i>
+            </td>
             <td>${code.course}</td>
             <td>${code.userEmail || 'Not assigned'}</td>
             <td>
                 <span class="status ${code.status === 'active' ? 'status-active' : 
                     code.status === 'pending' ? 'status-pending' : 'status-used'}">
-                    ${code.status.charAt(0).toUpperCase() + code.status.slice(1)}
+                    ${formatStatus(code.status)}
                 </span>
             </td>
-            <td>${new Date(code.createdAt).toLocaleDateString()}</td>
+            <td>${formatDate(code.createdAt)}</td>
+            <td>${code.usedAt ? formatDate(code.usedAt) : 'N/A'}</td>
         `;
         tableBody.appendChild(row);
+    });
+    
+    // Reinitialize copy functionality
+    const copyIcons = document.querySelectorAll('.copy-icon');
+    copyIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            const code = this.closest('.code-cell').querySelector('span').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                showNotification('success', 'Access code copied to clipboard!');
+                
+                // Visual feedback
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showNotification('error', 'Failed to copy code');
+            });
+        });
     });
 }
 
@@ -284,7 +501,7 @@ function generateAccessCode() {
     const course = courseSelect.value;
     
     if (!course) {
-        alert('Please select a course!');
+        showNotification('error', 'Please select a course!');
         return;
     }
     
@@ -297,12 +514,15 @@ function generateAccessCode() {
         createdAt: new Date().toISOString()
     };
     
-    let codes = JSON.parse(localStorage.getItem('accessCodes') || '[]');
+    let codes = getAccessCodes();
     codes.push(newCode);
     localStorage.setItem('accessCodes', JSON.stringify(codes));
     
     renderAccessCodes();
-    alert(`Access code generated: ${code}\nCourse: ${course}`);
+    showNotification('success', `Access code generated: ${code}`);
+    
+    // Reset selection
+    courseSelect.value = '';
 }
 
 function generateRandomCode(length) {
@@ -315,7 +535,7 @@ function generateRandomCode(length) {
 }
 
 function loadManageAdmins() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const user = getCurrentUser();
     if (!user || !user.isAdmin) {
         window.location.href = 'courses.html';
         return;
@@ -325,7 +545,7 @@ function loadManageAdmins() {
 }
 
 function renderAdmins() {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const users = getUsers();
     const admins = users.filter(user => user.isAdmin);
     const tableBody = document.querySelector('#admins-table tbody');
     
@@ -333,20 +553,29 @@ function renderAdmins() {
     
     tableBody.innerHTML = '';
     
+    if (admins.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 2.5rem; color: #a0a0c0;">No admins found</td>
+            </tr>
+        `;
+        return;
+    }
+    
     admins.forEach(admin => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${admin.name}</td>
             <td>${admin.email}</td>
             <td>
-                <span class="status ${admin.email === 'tawandamahachi07@gmail.com' ? 'status-active' : 'status-pending'}">
-                    ${admin.email === 'tawandamahachi07@gmail.com' ? 'Super Admin' : 'Admin'}
+                <span class="status ${admin.isSuperAdmin ? 'status-active' : 'status-pending'}">
+                    ${admin.isSuperAdmin ? 'Super Admin' : 'Admin'}
                 </span>
             </td>
             <td>
-                ${admin.email !== 'tawandamahachi07@gmail.com' ? 
+                ${!admin.isSuperAdmin ? 
                     `<button class="btn btn-danger btn-sm" onclick="removeAdmin('${admin.id}')">Remove</button>` : 
-                    'Cannot be removed'}
+                    '<span style="color: #00d2d3;">Primary Admin</span>'}
             </td>
         `;
         tableBody.appendChild(row);
@@ -354,19 +583,31 @@ function renderAdmins() {
 }
 
 function addAdmin() {
-    const email = document.getElementById('admin-email').value;
+    const emailInput = document.getElementById('admin-email');
+    const email = emailInput.value.trim();
     
     if (!email) {
-        alert('Please enter an email address!');
+        showNotification('error', 'Please enter an email address!');
+        return;
+    }
+    
+    if (!validateEmail(email)) {
+        showNotification('error', 'Please enter a valid email address!');
         return;
     }
     
     // Check if user exists
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const userIndex = users.findIndex(u => u.email === email);
+    const users = getUsers();
+    const userIndex = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
     
     if (userIndex === -1) {
-        alert('User not found!');
+        showNotification('error', 'User not found!');
+        return;
+    }
+    
+    // Check if user is already admin
+    if (users[userIndex].isAdmin) {
+        showNotification('error', 'User is already an admin!');
         return;
     }
     
@@ -375,102 +616,82 @@ function addAdmin() {
     localStorage.setItem('users', JSON.stringify(users));
     
     renderAdmins();
-    document.getElementById('admin-email').value = '';
-    alert(`User ${email} has been made an admin!`);
+    emailInput.value = '';
+    showNotification('success', `User ${email} has been made an admin!`);
 }
 
 function removeAdmin(userId) {
-    if (confirm('Are you sure you want to remove this admin?')) {
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = getCurrentUser();
+    
+    if (userId === 'admin' || userId === user.id) {
+        showNotification('error', 'You cannot remove this admin!');
+        return;
+    }
+    
+    if (confirm('Are you sure you want to remove this admin? This action cannot be undone.')) {
+        const users = getUsers();
         const userIndex = users.findIndex(u => u.id === userId);
         
         if (userIndex !== -1) {
             users[userIndex].isAdmin = false;
             localStorage.setItem('users', JSON.stringify(users));
             renderAdmins();
+            showNotification('success', 'Admin privileges removed successfully!');
         }
     }
 }
 
-// Access code functions
-function initAccessCode() {
-    const verifyCodeBtn = document.getElementById('verify-code-btn');
-    if (verifyCodeBtn) {
-        verifyCodeBtn.addEventListener('click', verifyAccessCode);
-    }
-    
-    // Initialize access code input fields
-    const codeInputs = document.querySelectorAll('.code-input');
-    codeInputs.forEach((input, index) => {
-        input.addEventListener('input', function() {
-            if (this.value && index < codeInputs.length - 1) {
-                codeInputs[index + 1].focus();
-            }
+// ======================
+// COURSE SYSTEM
+// ======================
+function initCourseBadges() {
+    // YouTube badge animation
+    const youtubeBadge = document.querySelector('.youtube-badge .course-badge');
+    if (youtubeBadge) {
+        youtubeBadge.style.animation = 'float 6s ease-in-out infinite';
+        
+        // Add subtle pulse on hover
+        youtubeBadge.addEventListener('mouseenter', function() {
+            this.style.animationPlayState = 'paused';
         });
         
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Backspace' && !this.value && index > 0) {
-                codeInputs[index - 1].focus();
-            }
+        youtubeBadge.addEventListener('mouseleave', function() {
+            this.style.animationPlayState = 'running';
         });
-    });
-}
-
-function verifyAccessCode() {
-    const codeInputs = document.querySelectorAll('.code-input');
-    const code = Array.from(codeInputs).map(input => input.value).join('');
-    const course = localStorage.getItem('selectedCourse');
-    
-    if (code.length !== 8) {
-        alert('Please enter a valid 8-character access code!');
-        return;
     }
     
-    const codes = JSON.parse(localStorage.getItem('accessCodes') || '[]');
-    const codeObj = codes.find(c => c.code === code && c.course === course);
-    
-    if (!codeObj) {
-        alert('Invalid access code for this course!');
-        return;
+    // Digital badge animation
+    const digitalBadge = document.querySelector('.digital-badge .course-badge');
+    if (digitalBadge) {
+        digitalBadge.style.animation = 'float 7s ease-in-out infinite';
+        digitalBadge.style.animationDelay = '0.5s';
+        
+        digitalBadge.addEventListener('mouseenter', function() {
+            this.style.animationPlayState = 'paused';
+        });
+        
+        digitalBadge.addEventListener('mouseleave', function() {
+            this.style.animationPlayState = 'running';
+        });
     }
     
-    if (codeObj.status === 'used') {
-        alert('This access code has already been used!');
-        return;
-    }
-    
-    // Update code status
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    const updatedCodes = codes.map(c => 
-        c.code === code ? {...c, status: 'used', userEmail: user.email} : c
-    );
-    localStorage.setItem('accessCodes', JSON.stringify(updatedCodes));
-    
-    // Add course to user
-    user.courses = user.courses || [];
-    if (!user.courses.includes(course)) {
-        user.courses.push(course);
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const userIndex = users.findIndex(u => u.id === user.id);
-        if (userIndex !== -1) {
-            users[userIndex] = user;
-            localStorage.setItem('users', JSON.stringify(users));
-        }
-        localStorage.setItem('currentUser', JSON.stringify(user));
-    }
-    
-    // Redirect to course
-    if (course === 'YouTube Automation') {
-        window.location.href = 'youtube-automation.html';
-    } else if (course === 'Digital Marketing') {
-        window.location.href = 'digital-marketing.html';
-    } else if (course === 'Data Science Fundamentals') {
-        window.location.href = 'data-science.html';
+    // Data science badge animation
+    const dataScienceBadge = document.querySelector('.data-science-badge .course-badge');
+    if (dataScienceBadge) {
+        dataScienceBadge.style.animation = 'float 8s ease-in-out infinite';
+        dataScienceBadge.style.animationDelay = '1s';
+        
+        dataScienceBadge.addEventListener('mouseenter', function() {
+            this.style.animationPlayState = 'paused';
+        });
+        
+        dataScienceBadge.addEventListener('mouseleave', function() {
+            this.style.animationPlayState = 'running';
+        });
     }
 }
 
-// Course functions
-function initCourses() {
+function initCourseSelection() {
     // Course selection
     const courseCards = document.querySelectorAll('.course-card');
     courseCards.forEach(card => {
@@ -478,13 +699,13 @@ function initCourses() {
             const courseName = this.getAttribute('data-course');
             localStorage.setItem('selectedCourse', courseName);
             
-            // Check if user already has access to Data Science (it's free)
+            // Data Science is free
             if (courseName === 'Data Science Fundamentals') {
-                const user = JSON.parse(localStorage.getItem('currentUser'));
+                const user = getCurrentUser();
                 user.courses = user.courses || [];
                 if (!user.courses.includes(courseName)) {
                     user.courses.push(courseName);
-                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    const users = getUsers();
                     const userIndex = users.findIndex(u => u.id === user.id);
                     if (userIndex !== -1) {
                         users[userIndex] = user;
@@ -498,19 +719,80 @@ function initCourses() {
             }
         });
     });
+}
+
+// ======================
+// UTILITY FUNCTIONS
+// ======================
+function getUsers() {
+    return JSON.parse(localStorage.getItem('users') || '[]');
+}
+
+function getAccessCodes() {
+    return JSON.parse(localStorage.getItem('accessCodes') || '[]');
+}
+
+function formatStatus(status) {
+    return status.charAt(0).toUpperCase() + status.slice(1);
+}
+
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+function showNotification(type, message) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type} show`;
+    notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        ${message}
+    `;
     
-    // Check course access
-    const protectedCourses = ['youtube-automation.html', 'digital-marketing.html'];
-    const currentPage = window.location.pathname.split('/').pop();
+    document.body.appendChild(notification);
     
-    if (protectedCourses.includes(currentPage)) {
-        const user = JSON.parse(localStorage.getItem('currentUser'));
-        const courseName = currentPage === 'youtube-automation.html' ? 
-            'YouTube Automation' : 'Digital Marketing';
-            
-        if (!user.courses || !user.courses.includes(courseName)) {
-            alert('You do not have access to this course. Please enter a valid access code.');
-            window.location.href = 'access-code.html';
-        }
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+function checkUrlNotifications() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const notification = urlParams.get('notification');
+    
+    if (notification) {
+        const [type, message] = notification.split(':');
+        showNotification(type, message);
     }
+}
+
+function initResponsive() {
+    // Mobile menu toggle
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+    }
+    
+    // Close mobile menu when clicking a link
+    const navLinksItems = document.querySelectorAll('.nav-links a');
+    navLinksItems.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 992) {
+                navLinks.classList.remove('active');
+                mobileToggle.querySelector('i').classList.add('fa-bars');
+                mobileToggle.querySelector('i').classList.remove('fa-times');
+            }
+        });
+    });
 }

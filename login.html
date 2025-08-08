@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | NEXORA-TECH</title>
+    <meta name="description" content="Login to your NEXORA-TECH account to access premium courses">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -15,6 +16,9 @@
                 <ul class="nav-links">
                     <li><a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
                 </ul>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
             </nav>
         </div>
     </header>
@@ -27,14 +31,20 @@
                     <div class="form-group">
                         <label for="email">Email Address</label>
                         <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        <small style="color: #a0a0c0; display: block; margin-top: 0.4rem;">We'll never share your email with anyone else</small>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
                     </div>
-                    <button type="submit" class="btn btn-primary pulse">Login</button>
-                    <div style="text-align: center; margin-top: 1.5rem;">
-                        <p>Don't have an account? <a href="signup.html" style="color: #4facfe;">Sign up</a></p>
+                    <button type="submit" class="btn btn-primary pulse">
+                        <i class="fas fa-sign-in-alt btn-icon"></i> Login
+                    </button>
+                    <div style="text-align: center; margin-top: 1.8rem;">
+                        <p style="color: #c0c0ff; margin-bottom: 1rem;">Don't have an account?</p>
+                        <a href="signup.html" class="btn btn-outline" style="width: auto; display: inline-block;">
+                            <i class="fas fa-user-plus btn-icon"></i> Create Account
+                        </a>
                     </div>
                 </form>
             </div>

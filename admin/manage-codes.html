@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Access Codes | NEXORA-TECH</title>
+    <meta name="description" content="Manage access codes for NEXORA-TECH courses">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../css/style.css">
 </head>
@@ -15,6 +16,9 @@
                 <ul class="nav-links auth-links">
                     <!-- Will be populated by JavaScript -->
                 </ul>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
             </nav>
         </div>
     </header>
@@ -32,21 +36,25 @@
                 
                 <div class="main-content">
                     <div class="admin-header">
-                        <h2 class="neon-text" style="font-size: 1.8rem;">Manage Access Codes</h2>
-                        <button id="generate-code-btn" class="btn btn-primary">Generate Code</button>
+                        <h2 class="neon-text" style="font-size: 1.9rem;">Manage Access Codes</h2>
+                        <button id="generate-code-btn" class="btn btn-primary" style="padding: 0.9rem 1.8rem;">
+                            <i class="fas fa-plus-circle btn-icon"></i> Generate Code
+                        </button>
                     </div>
                     
-                    <div style="margin-bottom: 1.5rem;">
-                        <label for="course-select" style="display: block; margin-bottom: 0.5rem; color: #c0c0ff;">Select Course</label>
-                        <select id="course-select" class="form-control" style="width: 300px;">
+                    <div style="margin-bottom: 1.7rem;">
+                        <label for="course-select" style="display: block; margin-bottom: 0.6rem; color: #c0c0ff; font-size: 1.05rem;">Select Course</label>
+                        <select id="course-select" class="form-control" style="width: 100%; max-width: 350px;">
                             <option value="">-- Select Course --</option>
                             <option value="YouTube Automation">YouTube Automation</option>
                             <option value="Digital Marketing">Digital Marketing</option>
                         </select>
                     </div>
                     
-                    <div style="background: rgba(10, 20, 40, 0.7); padding: 1.5rem; border-radius: 10px;">
-                        <h3 style="color: #4facfe; margin-bottom: 1rem;">Access Codes</h3>
+                    <div style="background: rgba(10, 20, 40, 0.85); padding: 1.8rem; border-radius: 14px;">
+                        <h3 style="color: #4facfe; margin-bottom: 1.2rem; font-size: 1.7rem; display: flex; align-items: center; gap: 0.7rem;">
+                            <i class="fas fa-key"></i> Access Codes
+                        </h3>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -54,7 +62,8 @@
                                     <th>Course</th>
                                     <th>User</th>
                                     <th>Status</th>
-                                    <th>Date Created</th>
+                                    <th>Created</th>
+                                    <th>Used</th>
                                 </tr>
                             </thead>
                             <tbody id="codes-table">

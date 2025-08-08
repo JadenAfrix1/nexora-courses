@@ -2,10 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
 body {
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
     background: #0a0e17;
     color: #e0e0ff;
     line-height: 1.6;
@@ -14,6 +15,7 @@ body {
         radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(30, 64, 175, 0.05) 0%, transparent 20%);
     padding-bottom: 4rem;
+    background-attachment: fixed;
 }
 
 .container {
@@ -26,6 +28,11 @@ body {
 header {
     padding: 1.5rem 0;
     border-bottom: 1px solid rgba(30, 64, 175, 0.3);
+    background: rgba(10, 14, 23, 0.95);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .navbar {
@@ -43,37 +50,36 @@ header {
     color: transparent;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
 }
 
 .logo i {
-    margin-right: 0.5rem;
+    font-size: 2rem;
 }
 
 .nav-links {
     display: flex;
     list-style: none;
+    gap: 1.8rem;
 }
 
-.nav-links li {
-    margin-left: 1.5rem;
-}
-
-.nav-links a {
+.nav-links li a {
     color: #c0c0ff;
     text-decoration: none;
     font-weight: 500;
-    transition: all 0.3s ease;
     position: relative;
+    padding: 0.5rem 0;
+    display: inline-block;
 }
 
-.nav-links a:hover {
+.nav-links li a:hover {
     color: #4facfe;
 }
 
-.nav-links a::after {
+.nav-links li a::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: 0;
     left: 0;
     width: 0;
     height: 2px;
@@ -81,12 +87,12 @@ header {
     transition: width 0.3s ease;
 }
 
-.nav-links a:hover::after {
+.nav-links li a:hover::after {
     width: 100%;
 }
 
 .content {
-    padding: 4rem 0;
+    padding: 4rem 0 6rem;
 }
 
 .section-title {
@@ -96,65 +102,112 @@ header {
 }
 
 .section-title h2 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     display: inline-block;
     background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .section-title h2::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
+    width: 80px;
+    height: 4px;
     background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .course-container {
     max-width: 800px;
     margin: 0 auto 3rem;
     background: rgba(15, 25, 50, 0.7);
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 100, 255, 0.2);
-    border: 1px solid rgba(30, 64, 175, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 100, 255, 0.25);
+    border: 1px solid rgba(30, 64, 175, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 100, 255, 0.35);
 }
 
 .badge {
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     text-align: center;
-    background: rgba(10, 20, 40, 0.8);
-    border-bottom: 1px solid rgba(30, 64, 175, 0.3);
+    background: rgba(10, 20, 40, 0.9);
+    border-bottom: 1px solid rgba(30, 64, 175, 0.4);
 }
 
 .youtube-badge {
-    background: linear-gradient(135deg, rgba(200, 0, 0, 0.2) 0%, rgba(100, 0, 0, 0.3) 100%);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(200, 0, 0, 0.25) 0%, rgba(100, 0, 0, 0.35) 100%);
+    box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.youtube-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #ff0000, #e62117);
 }
 
 .digital-badge {
-    background: linear-gradient(135deg, rgba(0, 80, 200, 0.2) 0%, rgba(0, 40, 100, 0.3) 100%);
-    box-shadow: 0 0 15px rgba(0, 150, 255, 0.1);
+    background: linear-gradient(135deg, rgba(0, 80, 200, 0.25) 0%, rgba(0, 40, 100, 0.35) 100%);
+    box-shadow: 0 8px 25px rgba(0, 150, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.digital-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #0077b6, #00b4d8);
 }
 
 .data-science-badge {
-    background: linear-gradient(135deg, rgba(0, 180, 100, 0.2) 0%, rgba(0, 90, 50, 0.3) 100%);
-    box-shadow: 0 0 15px rgba(0, 255, 150, 0.1);
+    background: linear-gradient(135deg, rgba(0, 180, 100, 0.25) 0%, rgba(0, 90, 50, 0.35) 100%);
+    box-shadow: 0 8px 25px rgba(0, 255, 150, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.data-science-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #00a8cc, #00d2d3);
 }
 
 .badge h3 {
-    font-size: 2rem;
+    font-size: 2.3rem;
     margin-bottom: 1rem;
     background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
 }
 
 .digital-badge h3 {
@@ -172,40 +225,43 @@ header {
 }
 
 .badge p {
-    color: #c0c0ff;
-    font-size: 1.1rem;
-    max-width: 600px;
+    color: #d0d0ff;
+    font-size: 1.2rem;
+    max-width: 650px;
     margin: 0 auto;
+    line-height: 1.7;
 }
 
 .course-content {
-    padding: 2rem;
+    padding: 2.5rem;
 }
 
 .btn {
     display: block;
     width: 100%;
-    padding: 1.2rem;
+    padding: 1.3rem;
     background: linear-gradient(90deg, #0c2461 0%, #1e3799 100%);
     color: white;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 600;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
     text-align: center;
     text-decoration: none;
-    box-shadow: 0 5px 15px rgba(0, 100, 255, 0.3);
-    border: 1px solid rgba(30, 64, 175, 0.5);
+    box-shadow: 0 6px 18px rgba(0, 100, 255, 0.35);
+    border: 1px solid rgba(30, 64, 175, 0.6);
     position: relative;
     overflow: hidden;
-    margin: 1rem 0;
+    margin: 1.2rem 0;
+    letter-spacing: 0.5px;
+    font-family: 'Segoe UI', sans-serif;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 150, 255, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 150, 255, 0.5);
     background: linear-gradient(90deg, #1e3799 0%, #2e52b2 100%);
 }
 
@@ -220,10 +276,10 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, rgba(74, 171, 255, 0.1) 0%, rgba(0, 247, 255, 0.3) 100%);
+    background: linear-gradient(90deg, rgba(74, 171, 255, 0.15) 0%, rgba(0, 247, 255, 0.35) 100%);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.4s ease;
+    transition: transform 0.45s ease;
     z-index: -1;
 }
 
@@ -249,6 +305,12 @@ header {
     color: #4facfe;
 }
 
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
 .whatsapp-section {
     max-width: 800px;
     margin: 0 auto;
@@ -258,27 +320,38 @@ header {
 .whatsapp-btn {
     display: inline-block;
     width: auto;
-    padding: 1.2rem 2.5rem;
+    padding: 1.3rem 2.7rem;
     margin-top: 1.5rem;
     background: linear-gradient(90deg, #075E54 0%, #128C7E 100%);
+    border-radius: 10px;
+    font-size: 1.15rem;
+    box-shadow: 0 6px 18px rgba(7, 94, 84, 0.35);
+    transition: all 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(7, 94, 84, 0.5);
+    background: linear-gradient(90deg, #0a6e68 0%, #149c92 100%);
 }
 
 .footer {
     text-align: center;
-    padding: 2rem 0;
+    padding: 2.5rem 0 1.5rem;
     margin-top: 2rem;
     border-top: 1px solid rgba(30, 64, 175, 0.3);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #8080ff;
+    background: rgba(5, 10, 20, 0.8);
 }
 
 .back-btn {
     background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
-    margin-top: 2rem;
+    margin-top: 2.2rem;
 }
 
 .neon-text {
-    text-shadow: 0 0 5px rgba(0, 150, 255, 0.7), 0 0 10px rgba(0, 150, 255, 0.5);
+    text-shadow: 0 0 8px rgba(0, 150, 255, 0.8), 0 0 15px rgba(0, 150, 255, 0.6);
 }
 
 .pulse {
@@ -287,185 +360,310 @@ header {
 
 @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(0, 150, 255, 0.4); }
-    70% { box-shadow: 0 0 0 12px rgba(0, 150, 255, 0); }
+    70% { box-shadow: 0 0 0 15px rgba(0, 150, 255, 0); }
     100% { box-shadow: 0 0 0 0 rgba(0, 150, 255, 0); }
 }
 
 .price-tag {
     display: inline-block;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    margin: 1rem 0;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 0.6rem 1.4rem;
+    border-radius: 30px;
+    margin: 1.3rem 0;
     font-weight: 600;
+    border: 1px solid rgba(30, 64, 175, 0.4);
 }
 
 .usd-price {
     color: #4facfe;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 .naira-price {
     color: #00d2d3;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     display: block;
-    margin-top: 0.3rem;
+    margin-top: 0.4rem;
+    opacity: 0.9;
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
+    position: relative;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
     font-weight: 500;
     color: #c0c0ff;
+    font-size: 1.05rem;
 }
 
 .form-control {
     width: 100%;
-    padding: 0.8rem;
-    background: rgba(10, 20, 40, 0.7);
-    border: 1px solid rgba(30, 64, 175, 0.5);
-    border-radius: 8px;
+    padding: 0.95rem 1.2rem;
+    background: rgba(10, 20, 40, 0.85);
+    border: 1px solid rgba(30, 64, 175, 0.6);
+    border-radius: 10px;
     color: #e0e0ff;
-    font-size: 1rem;
+    font-size: 1.05rem;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 10, 30, 0.15);
 }
 
 .form-control:focus {
     outline: none;
     border-color: #4facfe;
-    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+    box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.25);
+    background: rgba(15, 25, 45, 0.9);
 }
 
 .form-container {
-    max-width: 500px;
+    max-width: 520px;
     margin: 0 auto;
-    background: rgba(15, 25, 50, 0.7);
-    border-radius: 12px;
-    padding: 2.5rem;
-    box-shadow: 0 0 20px rgba(0, 100, 255, 0.2);
-    border: 1px solid rgba(30, 64, 175, 0.3);
+    background: rgba(15, 25, 50, 0.8);
+    border-radius: 16px;
+    padding: 2.8rem;
+    box-shadow: 0 15px 40px rgba(0, 10, 30, 0.35);
+    border: 1px solid rgba(30, 64, 175, 0.4);
+    backdrop-filter: blur(10px);
+    transform: translateY(0);
+    animation: floatIn 0.6s ease-out;
+}
+
+@keyframes floatIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .course-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2.5rem;
 }
 
 .course-card {
-    background: rgba(15, 25, 50, 0.7);
-    border-radius: 12px;
+    background: rgba(15, 25, 50, 0.75);
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 100, 255, 0.2);
-    border: 1px solid rgba(30, 64, 175, 0.3);
-    transition: transform 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 10, 30, 0.25);
+    border: 1px solid rgba(30, 64, 175, 0.35);
+    transition: all 0.4s cubic-bezier(0.25, 0.7, 0.25, 1);
+    transform: translateY(0);
+    will-change: transform, box-shadow;
+    position: relative;
+    overflow: hidden;
+}
+
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .course-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 20, 50, 0.35);
+}
+
+.course-card:hover::before {
+    opacity: 1;
+    animation: shine 1.5s;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: -100%; }
 }
 
 .course-image {
-    height: 180px;
+    height: 190px;
     overflow: hidden;
+    position: relative;
+}
+
+.course-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(10, 20, 40, 0.9) 0%, transparent 60%);
+    z-index: 2;
 }
 
 .course-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .course-card:hover .course-image img {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .course-details {
-    padding: 1.5rem;
+    padding: 1.8rem;
 }
 
 .course-details h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.55rem;
+    margin-bottom: 0.9rem;
     color: #4facfe;
+    transition: color 0.3s ease;
+}
+
+.course-card:hover .course-details h3 {
+    color: #00f2fe;
 }
 
 .payment-options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.8rem;
+    margin-top: 2.2rem;
 }
 
 .payment-card {
-    background: rgba(10, 20, 40, 0.7);
-    border-radius: 10px;
-    padding: 1.5rem;
+    background: rgba(10, 20, 40, 0.8);
+    border-radius: 12px;
+    padding: 1.8rem;
     text-align: center;
-    border: 1px solid rgba(30, 64, 175, 0.3);
-    transition: all 0.3s ease;
+    border: 1px solid rgba(30, 64, 175, 0.4);
+    transition: all 0.35s cubic-bezier(0.25, 0.7, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.payment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
 }
 
 .payment-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
     border-color: #4facfe;
+    box-shadow: 0 12px 25px rgba(0, 50, 150, 0.25);
+}
+
+.payment-card:hover::before {
+    opacity: 1;
+    animation: shine 1.5s;
 }
 
 .payment-card i {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 2.7rem;
+    margin-bottom: 1.2rem;
     display: block;
+    transition: transform 0.3s ease;
+}
+
+.payment-card:hover i {
+    transform: scale(1.1);
 }
 
 .usd-icon {
     color: #4facfe;
+    text-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
 }
 
 .naira-icon {
     color: #00d2d3;
+    text-shadow: 0 0 10px rgba(0, 210, 211, 0.3);
 }
 
 .crypto-icon {
     color: #f2a900;
+    text-shadow: 0 0 10px rgba(242, 169, 0, 0.3);
 }
 
 .access-code-container {
-    max-width: 500px;
+    max-width: 520px;
     margin: 0 auto;
 }
 
 .access-code-input {
     display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 0.7rem;
+    margin-bottom: 1.8rem;
+    justify-content: center;
 }
 
 .access-code-input input {
     flex: 1;
     text-align: center;
-    font-size: 1.5rem;
-    letter-spacing: 5px;
-    height: 50px;
+    font-size: 1.7rem;
+    letter-spacing: 6px;
+    height: 60px;
+    border-radius: 10px;
+    background: rgba(10, 20, 40, 0.8);
+    border: 2px solid rgba(30, 64, 175, 0.6);
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.access-code-input input:focus {
+    border-color: #4facfe;
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.25);
+    transform: translateY(-2px);
+}
+
+.copy-code-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(30, 64, 175, 0.3);
+    color: #4facfe;
+    border: 1px solid rgba(30, 64, 175, 0.5);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+}
+
+.copy-code-btn:hover {
+    background: rgba(30, 64, 175, 0.5);
+    transform: translateY(-1px);
 }
 
 .admin-dashboard {
     display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 2rem;
-    margin-top: 2rem;
+    grid-template-columns: 280px 1fr;
+    gap: 2.2rem;
+    margin-top: 2.2rem;
 }
 
 .sidebar {
-    background: rgba(10, 20, 40, 0.7);
-    border-radius: 10px;
-    padding: 1.5rem;
+    background: rgba(10, 20, 40, 0.85);
+    border-radius: 14px;
+    padding: 1.7rem 0;
     height: fit-content;
+    border: 1px solid rgba(30, 64, 175, 0.4);
+    box-shadow: 0 5px 20px rgba(0, 10, 30, 0.2);
 }
 
 .sidebar ul {
@@ -473,71 +671,164 @@ header {
 }
 
 .sidebar li {
-    margin-bottom: 0.8rem;
+    margin: 0 1.2rem 0.5rem;
 }
 
 .sidebar a {
-    display: block;
-    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.95rem 1.3rem;
     color: #c0c0ff;
-    border-radius: 6px;
+    border-radius: 10px;
     text-decoration: none;
     transition: all 0.3s ease;
+    font-size: 1.05rem;
+    position: relative;
+    overflow: hidden;
 }
 
-.sidebar a:hover, .sidebar a.active {
-    background: rgba(79, 172, 254, 0.2);
+.sidebar a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, #4facfe, #00f2fe);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+    transform-origin: bottom;
+}
+
+.sidebar a.active {
+    background: rgba(30, 64, 175, 0.3);
+    color: #4facfe;
+}
+
+.sidebar a.active::before {
+    transform: scaleY(1);
+}
+
+.sidebar a:hover {
+    background: rgba(30, 64, 175, 0.2);
     color: #4facfe;
 }
 
 .main-content {
-    background: rgba(15, 25, 50, 0.7);
-    border-radius: 12px;
-    padding: 2rem;
-    border: 1px solid rgba(30, 64, 175, 0.3);
+    background: rgba(15, 25, 50, 0.8);
+    border-radius: 16px;
+    padding: 2.2rem;
+    border: 1px solid rgba(30, 64, 175, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 10, 30, 0.2);
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 0.5rem;
 }
 
 .table th, .table td {
-    padding: 1rem;
+    padding: 1.1rem 1rem;
     text-align: left;
     border-bottom: 1px solid rgba(30, 64, 175, 0.3);
+    transition: background 0.2s ease;
 }
 
 .table th {
     color: #4facfe;
     font-weight: 600;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.table tr {
+    transition: background 0.2s ease;
 }
 
 .table tr:hover {
     background: rgba(79, 172, 254, 0.1);
 }
 
+.table tr:last-child td {
+    border-bottom: none;
+}
+
 .status {
     display: inline-block;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    padding: 0.4rem 0.95rem;
+    border-radius: 25px;
+    font-size: 0.88rem;
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    min-width: 100px;
+    text-align: center;
 }
 
 .status-active {
     background: rgba(10, 150, 80, 0.2);
     color: #00d2d3;
+    border: 1px solid rgba(0, 210, 211, 0.3);
 }
 
 .status-pending {
     background: rgba(212, 160, 23, 0.2);
     color: #d4a017;
+    border: 1px solid rgba(212, 160, 23, 0.3);
 }
 
 .status-used {
     background: rgba(179, 27, 27, 0.2);
     color: #b31b1b;
+    border: 1px solid rgba(179, 27, 27, 0.3);
+}
+
+.code-cell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.copy-icon {
+    color: #4facfe;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+}
+
+.copy-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.copied-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(10, 20, 40, 0.95);
+    color: #4facfe;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transform: translateX(150%);
+    transition: transform 0.3s ease;
+    border-left: 4px solid #4facfe;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.copied-notification.show {
+    transform: translateX(0);
 }
 
 /* Admin-specific styles */
@@ -545,16 +836,175 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(30, 64, 175, 0.3);
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(30, 64, 175, 0.35);
 }
 
 .hidden {
     display: none;
 }
 
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+    margin-bottom: 2.3rem;
+}
+
+.stat-card {
+    background: rgba(10, 20, 40, 0.85);
+    padding: 1.8rem;
+    border-radius: 14px;
+    text-align: center;
+    border: 1px solid rgba(30, 64, 175, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 20, 50, 0.25);
+}
+
+.stat-card.users::before {
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+}
+
+.stat-card.codes::before {
+    background: linear-gradient(90deg, #00d2d3, #00a8cc);
+}
+
+.stat-card.used::before {
+    background: linear-gradient(90deg, #f2a900, #e6b325);
+}
+
+.stat-value {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    line-height: 1;
+}
+
+.stat-label {
+    color: #c0c0ff;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Course badges - enhanced */
+.course-badge {
+    display: inline-block;
+    padding: 1.8rem 3.2rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
+    margin: 1.5rem 0 2.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.25, 0.7, 0.25, 1);
+    transform: translateY(0);
+}
+
+.course-badge:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+}
+
+.course-badge h3 {
+    font-size: 2.4rem;
+    margin-bottom: 1.1rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    position: relative;
+    z-index: 2;
+}
+
+.course-badge p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.course-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+    z-index: 1;
+}
+
+.youtube-badge .course-badge {
+    background: linear-gradient(135deg, #e62117 0%, #c9184a 100%);
+}
+
+.digital-badge .course-badge {
+    background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+}
+
+.data-science-badge .course-badge {
+    background: linear-gradient(135deg, #00a8cc 0%, #00d2d3 100%);
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.8rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateX(120%);
+    transition: transform 0.4s ease;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border-left: 4px solid;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    background: rgba(10, 120, 80, 0.95);
+    border-left-color: #00d2d3;
+}
+
+.notification.error {
+    background: rgba(180, 30, 30, 0.95);
+    border-left-color: #ff4b2b;
+}
+
 /* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 1.8rem;
+    }
+}
+
 @media (max-width: 992px) {
     .admin-dashboard {
         grid-template-columns: 1fr;
@@ -563,40 +1013,104 @@ header {
     .sidebar {
         display: flex;
         justify-content: center;
+        width: 100%;
     }
     
     .sidebar ul {
         display: flex;
+        overflow-x: auto;
+        padding: 0 1rem;
+        gap: 0.5rem;
     }
     
     .sidebar li {
-        margin: 0 0.5rem;
+        margin: 0;
+    }
+    
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
     }
 }
 
 @media (max-width: 768px) {
     .container {
-        padding: 0 1.5rem;
+        padding: 0 1.4rem;
     }
     
     .content {
-        padding: 3rem 0;
+        padding: 3.2rem 0;
     }
     
     .section-title h2 {
+        font-size: 2.1rem;
+    }
+    
+    .badge h3 {
         font-size: 1.8rem;
+    }
+    
+    .btn {
+        padding: 1.1rem;
+        font-size: 1.05rem;
+    }
+    
+    .form-container {
+        padding: 2rem;
+        width: 95%;
+    }
+    
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .whatsapp-btn {
+        width: 100%;
+    }
+    
+    .price-tag {
+        display: block;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-title h2 {
+        font-size: 1.9rem;
+    }
+    
+    .logo {
+        font-size: 1.6rem;
+    }
+    
+    .nav-links {
+        gap: 1.2rem;
     }
     
     .badge h3 {
         font-size: 1.6rem;
     }
     
-    .btn {
-        padding: 1rem;
-        font-size: 1rem;
+    .course-badge {
+        padding: 1.5rem 2rem;
     }
     
-    .form-container {
-        padding: 1.5rem;
+    .course-badge h3 {
+        font-size: 2rem;
+    }
+    
+    .stat-value {
+        font-size: 2.4rem;
+    }
+    
+    .access-code-input input {
+        height: 55px;
+        font-size: 1.5rem;
     }
 }

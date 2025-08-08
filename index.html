@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEXORA-TECH | Premium Digital Learning</title>
+    <meta name="description" content="Professional digital courses in YouTube Automation, Digital Marketing, and Data Science">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -11,11 +12,14 @@
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo"><i class="fas fa-infinity"></i> NEXORA-TECH</div>
+                <a href="index.html" class="logo"><i class="fas fa-infinity"></i> NEXORA-TECH</a>
                 <ul class="nav-links">
                     <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
                     <li><a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
                 </ul>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
             </nav>
         </div>
     </header>
@@ -29,31 +33,35 @@
             <div class="course-grid">
                 <div class="course-card" data-course="YouTube Automation">
                     <div class="course-image">
-                        <img src="https://placehold.co/600x400/0a0e17/4facfe?text=YouTube+Automation" alt="YouTube Automation">
+                        <img src="https://placehold.co/600x400/0a0e17/ff0000?text=YouTube+Automation&font=montserrat" alt="YouTube Automation">
                     </div>
                     <div class="course-details">
                         <h3>YouTube Automation</h3>
-                        <p>Master YouTube automation and build passive income channels</p>
+                        <p>Master YouTube automation and build passive income channels with minimal effort</p>
                         <div class="price-tag">
-                            <span class="usd-price">$20 USD</span>
-                            <span class="naira-price">≈ ₦29,000 Naira</span>
+                            <span class="usd-price">$14 USD</span>
+                            <span class="naira-price">≈ ₦20,300 Naira</span>
                         </div>
-                        <button class="btn btn-primary">Get Course</button>
+                        <button class="btn btn-primary pulse">
+                            <i class="fas fa-lock"></i> Get Course
+                        </button>
                     </div>
                 </div>
                 
                 <div class="course-card" data-course="Digital Marketing">
                     <div class="course-image">
-                        <img src="https://placehold.co/600x400/0a0e17/00f2fe?text=Digital+Marketing" alt="Digital Marketing">
+                        <img src="https://placehold.co/600x400/0a0e17/007bff?text=Digital+Marketing&font=montserrat" alt="Digital Marketing">
                     </div>
                     <div class="course-details">
                         <h3>Digital Marketing</h3>
-                        <p>Complete digital marketing mastery program</p>
+                        <p>Complete digital marketing mastery program for career advancement</p>
                         <div class="price-tag">
-                            <span class="usd-price">$12 USD</span>
-                            <span class="naira-price">≈ ₦17,400 Naira</span>
+                            <span class="usd-price">$8.40 USD</span>
+                            <span class="naira-price">≈ ₦12,180 Naira</span>
                         </div>
-                        <button class="btn btn-primary">Get Course</button>
+                        <button class="btn btn-primary pulse">
+                            <i class="fas fa-lock"></i> Get Course
+                        </button>
                     </div>
                 </div>
                 
@@ -63,11 +71,13 @@
                     </div>
                     <div class="course-details">
                         <h3>Data Science Fundamentals</h3>
-                        <p>Learn the basics of data science and analytics</p>
-                        <div class="price-tag" style="background: rgba(0, 180, 100, 0.3);">
-                            <span class="usd-price">FREE</span>
+                        <p>Learn the basics of data science and analytics with hands-on projects</p>
+                        <div class="price-tag" style="background: rgba(0, 180, 100, 0.4);">
+                            <span class="usd-price">FREE ACCESS</span>
                         </div>
-                        <button class="btn btn-success">Get Course</button>
+                        <button class="btn btn-success">
+                            <i class="fas fa-gift"></i> Get Course
+                        </button>
                     </div>
                 </div>
             </div>
@@ -90,5 +100,11 @@
     </footer>
     
     <script src="js/script.js"></script>
+    <script>
+        // Initialize course selection
+        document.addEventListener('DOMContentLoaded', function() {
+            initCourseSelection();
+        });
+    </script>
 </body>
 </html>
